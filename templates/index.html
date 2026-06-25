@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block title %} {{ title }} {% endblock %}
+
+ {% block content %}
+    {% if posts is not none %}
+    <h1>Our posts about Ajax:</h1>
+    {% for post in posts %}
+        <div class="card mb-3">
+                  <h5 class="card-title">{{ post.title }}</h5>
+                <p class="card-text"/>{{ post.author }} </p>
+                <p class="card-text">{{ post.content }}</p>
+        </div>
+    {% endfor %}
+    {% endif %}
+{% endblock %}
