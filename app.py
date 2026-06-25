@@ -37,7 +37,7 @@ class Blog:
 
     @classmethod
     def is_duplicate(cls, new_post:dict, existing_post:Union[dict,None]) -> bool:
-        if isinstance(existing_post, dict):
+        if not isinstance(existing_post, dict):
             return False
         if (new_post['title'] == existing_post['title'] and
                 new_post['author'] == existing_post['author'] and
@@ -98,8 +98,6 @@ class Blog:
         #        use the provided id to store the blog
         if not self.__cache_valid:
             self.__json_fetch()  # make the cache valid again
-        if self.post_exists(new_post):
-            return False
         self.__cache.append(new_post)
         json_str = json.dumps(self.__cache)
 
@@ -116,12 +114,14 @@ class Blog:
         else:
             if isinstance(self.__cache, list):
                 new_id = self.__cache[-1:][0].get('id', 0) + 1
-                print("neW", new_id)
+                print("new_id", new_id)
                 return new_id
             else:
                 raise BlogCorruption("The blog is corrupted")
 
-    def set(self, posts: list)->bool:
+    def set(self, posts: Union[list, dict])->bool:
+        if isinstance(posts, dict):
+            posts = [posts]
         if isinstance(posts, list):
             for a_post in posts:
                 cur_id = a_post.get("id", None)
@@ -148,15 +148,6 @@ class Blog:
             self.__json_fetch()  # make the cache valid again
         return self.__cache
 
-    def get_post(self, id):
-        if not self.__cache_valid:
-            self.__json_fetch()  # make the cache valid again
-        if isinstance(self.__cache, list):
-            for post in self.__cache:
-                if post.get("id", None) == id:
-                    return post
-        return None
-
     def __str__(self):
         if not self.__cache_valid:
             self.__json_fetch()  # make the cache valid again
@@ -169,12 +160,13 @@ class Blog:
                 posts_str += "\n======================================================\n"
         return posts_str
 
-my_blog = Blog("We Love Ajax")
+blog = Blog("We Love Ajax")
 
 @app.route('/')
 def index():
-    print(my_blog.get_all_posts())
-    return render_template('index.html', title=my_blog.get_name(), posts=my_blog.get_all_posts())
+    print("HERE IT STARTS!")
+    print(blog.get_all_posts())
+    return render_template('index.html', title=blog.get_name(), posts=blog.get_all_posts())
 
 def main():
     print("==========================================================================")
@@ -182,7 +174,7 @@ def main():
         {"id": 1, "author": "John Doe", "title": "First Post", "content": "This is my first post."},
         {"id": 2, "author": "Jane Doe", "title": "Second Post", "content": "This is another post."}
     ]
-    my_blog.set(initial_blog_posts)
+    blog.set(initial_blog_posts)
     app.run(host="0.0.0.0", port=5000, debug=True)
 
 
