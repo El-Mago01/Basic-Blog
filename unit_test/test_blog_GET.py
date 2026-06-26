@@ -9,6 +9,8 @@ Test cases:
 1.1 Create a new blog post, without existing json file
 1.2 Create a blog post with existing json file and add a new post
 1.3 Create 3 blog posts with empty elements
+1.4 Fault handling when json file can not be created
+1.5 Fault handling when json file is not accessible
 """
 
 @pytest.fixture
@@ -96,3 +98,4 @@ def test_create_blog_with_wrong_elements(test_init):
     assert "Second" in html
     assert "Jane" in html
     assert "5" in html
+    print(html)

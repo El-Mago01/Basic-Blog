@@ -1,24 +1,23 @@
-{% extends "layout.html" %}
+{% extends "layout2.html" %}
 {% block title %} {{ blog_name }} {% endblock %}
 
  {% block content %}
-    {% if posts is not none %}
-    <h1>Our posts about Ajax:</h1>
-    {% for post in posts %}
+    {% if post is not none %}
+    <h1>The requested post:</h1>
+
         <div class="card mb-3">
-                  <h5 class="card-title">{{ post.id }} - {{ post.title }}</h5>
+                  <h5 class="card-title">{{ post.title }}</h5>
                 <p class="card-text"/>{{ post.author }} </p>
                 <p class="card-text">{{ post.content }}</p>
                 {% if post.image %}
-                    <img src="{{ url_for('static', filename='images/uploads/' ~ post.image) }}"
+                    <img src="{{ url_for('static', filename='images/' ~ post.image) }}"
                          class="card-img-top post-image"
-                 alt="{{ post.title }}">
+                 style="height:900px" alt="{{ post.title }}"  >
                 {% else %}
-                    <img src="{{ url_for('static', filename='images/uploads/ajax_default.jpeg') }}"
+                    <img style="height:900px" src="{{ url_for('static', filename='images/ajax_default.jpeg') }}"
                          class="card-img-top post-image"
                          alt="Ajax blog image">
                 {% endif %}
         </div>
-    {% endfor %}
     {% endif %}
 {% endblock %}
