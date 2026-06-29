@@ -25,17 +25,27 @@
         {{ post.category if post.category else "Ajax Talk" }}
     </span>
     <div class="btn-group btn-group-sm">
-        <a href="{{ url_for('update', post_id=post.id) }}"
-           class="btn btn-outline-primary"
-           title="Edit">
-            ✏️
-        </a>
-        <a href="{{ url_for('delete', post_id=post.id) }}"
-           class="btn btn-outline-danger"
-           title="Delete">
-            🗑
-        </a>
-    </div>
+
+    <a href="{{ url_for('like', post_id=post.id) }}"
+       class="like-button"
+       title="Like this post">
+        ❤️
+        <span>{{ post.likes if post.likes else 0 }}</span>
+    </a>
+
+    <a href="{{ url_for('update', post_id=post.id) }}"
+       class="btn btn-outline-primary"
+       title="Edit">
+        ✏️
+    </a>
+
+    <a href="{{ url_for('delete', post_id=post.id) }}"
+       class="btn btn-outline-danger"
+       title="Delete">
+        🗑
+    </a>
+
+</div>
 
 </div>
 
