@@ -468,7 +468,7 @@ def add():
     """
     if request.method == "GET":
         return render_template("add.html")
-    print(f"User performed an ADD request with title {request.form.get('title', "Not provided")}")
+    print(f"User performed an ADD request with title {request.form.get('title', 'Not provided')}")
     try:
         title = request.form["title"]
         author = request.form["author"]
