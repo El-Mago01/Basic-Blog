@@ -1,0 +1,116 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-danger text-white py-3">
+                    <h2 class="mb-0">
+                        ✏️ Edit Blog Post
+                    </h2>
+                </div>
+                <div class="card-body p-5">
+                    <form action="{{ url_for('update', post_id=post.id) }}"
+                          method="POST"
+                          enctype="multipart/form-data">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                Author
+                            </label>
+
+                            <input
+                                class="form-control form-control-lg"
+                                type="text"
+                                name="author"
+                                value="{{ post.author }}"
+                                required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                Title
+                            </label>
+
+                            <input
+                                class="form-control form-control-lg"
+                                type="text"
+                                name="title"
+                                value="{{ post.title }}"
+                                required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                Category
+                            </label>
+
+                            <select class="form-select"
+                                    name="category">
+
+                                <option {% if post.category=="Ajax Talk" %}selected{% endif %}>
+                                    Ajax Talk
+                                </option>
+                                <option {% if post.category=="Transfers" %}selected{% endif %}>
+                                    Transfers
+                                </option>
+                                <option {% if post.category=="History" %}selected{% endif %}>
+                                    History
+                                </option>
+                                <option {% if post.category=="Youth Academy" %}selected{% endif %}>
+                                    Youth Academy
+                                </option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                Content
+                            </label>
+                            <textarea
+                                    class="form-control"
+                                    rows="10"
+                                    name="content"
+                                    required>{{ post.content }}</textarea>
+                        </div>
+                        <div class="mb-4">
+
+                            <label class="form-label fw-bold">
+                                Replace image
+                            </label>
+                            <input
+                                class="form-control"
+                                type="file"
+                                name="image"
+                                accept=".jpg,.jpeg,.png,.gif,.webp">
+                            <input type="hidden" name="current_image" value="{{ post.image }}">
+                        </div>
+                        {% if post.image %}
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                Current image
+                            </label>
+                            <img
+                                src="{{ url_for('static', filename='images/uploads/' ~ post.image) }}"
+                                class="img-fluid rounded shadow-sm">
+                        </div>
+                        {% endif %}
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('index') }}"
+                               class="btn btn-outline-secondary btn-lg">
+
+                                ← Cancel
+
+                            </a>
+                            <button
+                                class="btn btn-danger btn-lg"
+                                type="submit">
+
+                                💾 Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

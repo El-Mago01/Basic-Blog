@@ -77,36 +77,6 @@
             background: #111;
             color: #ddd;
         }
-
-        .delete-btn {
-            border-radius: 50%;
-            width: 34px;
-            height: 34px;
-            padding: 0;
-            line-height: 1;
-        }
-
-        .delete-btn:hover {
-            background-color: #dc3545;
-            color: white;
-        }
-        .action-btn {
-            border-radius: 20px;
-            min-width: 85px;
-            transition: all .2s ease;
-        }
-        
-        .action-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .btn-outline-primary:hover {
-            box-shadow: 0 4px 12px rgba(13,110,253,.25);
-        }
-
-        .btn-outline-danger:hover {
-            box-shadow: 0 4px 12px rgba(220,53,69,.25);
-        }
     </style>
 </head>
 
@@ -152,11 +122,6 @@
                 </p>
             </div>
         </div>
-
-        <div class="row g-4">
-            {% block content %}
-            {% endblock %}
-        </div>
     </section>
 
     <section id="new-post" class="my-5">
@@ -168,7 +133,7 @@
                             What’s your <span class="ajax-red">Ajax</span> opinion?
                         </h2>
                         <p class="text-muted mb-0">
-                            Share your thoughts about the match, transfers, tactics,
+                            Share your thoughts about matches, transfers, tactics,
                             young talents or anything Ajax-related.
                         </p>
                     </div>
@@ -185,7 +150,7 @@
                                     class="form-control form-control-lg"
                                     id="author"
                                     name="author"
-                                    placeholder="For example: Simon Tahamata"
+                                    placeholder="For example: Major Tom"
                                     required>
                             </div>
 
@@ -211,7 +176,7 @@
                                 <textarea
                                     class="form-control"
                                     id="new_post"
-                                    name="content"
+                                    name="post_text"
                                     rows="6"
                                     placeholder="Tell us what you think..."
                                     required></textarea>
