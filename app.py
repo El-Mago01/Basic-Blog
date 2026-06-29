@@ -198,9 +198,7 @@ class Blog:
             new_post["id"] = new_id
             new_post["likes"] = 0
             post_image = new_post.get("image", None)
-            print(
-                f"Image of post to be added: {post_image}, {
-                    type(post_image)}")
+            print(f"Image of post to be added: {post_image}, {type(post_image)}")
             if isinstance(post_image, str) or post_image is None:
                 if isinstance(post_image, str):
                     new_post["image"] = post_image
