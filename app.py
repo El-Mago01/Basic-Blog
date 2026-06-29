@@ -433,6 +433,7 @@ def update(post_id):
             "title": title,
             "author": author,
             "content": content,
+            "likes": 0,
         }
         if new_image:
             upd_post["image"] = new_image

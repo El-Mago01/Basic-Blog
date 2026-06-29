@@ -58,13 +58,51 @@ def test_1_1_Insert_2_posts_update_on_the_first_post_and_check_received_html(tes
 
 
 # 1.2 Insert 2 posts, update on the first post and check update
-def test_1_1_Insert_2_posts_update_on_the_first_post_and_check_update(test_init):
+def test_1_2_Insert_2_posts_update_on_the_first_post_and_check_update(test_init):
     client, test_blog, upd_post = test_init
     response_update1 = client.get("/update/1")
     response_update2 = client.post("/update/1", data=upd_post)
     html_upd1 = response_update1.data.decode()
     html_upd2 = response_update2.data.decode()
     print(test_blog.get_all_posts())
+    assert "Edit Blog Post" in html_upd1
+    assert "John Doe Jr" in html_upd2
+    assert "First Post - have fun" in html_upd2
+    assert "This is my first post. - have fun" in html_upd2
+    assert len(test_blog.get_all_posts()) == 2
+    assert response_update1.status_code == 200
+    assert response_update2.status_code == 200
+    assert "<title>We Love Ajax</title>" in html_upd2
+    assert "Jane" in html_upd2
+    assert "Second Post" in html_upd2
+    assert "ID: 2" in html_upd2
+    assert "ID: 1" in html_upd2
+
+def test_2_1_like_ID_1(test_init):
+    client, test_blog, upd_post = test_init
+    response_like = client.get("/like/1")
+    response_like = client.get("/like/2")
+    response_like = client.get("/like/2")
+    assert "<span>1</span>" in response_like.data.decode()
+    assert "<span>2</span>" in response_like.data.decode()
+    assert "<span>0</span>" not in response_like.data.decode()
+    assert "Like this post" in response_like.data.decode()
+
+def test_2_2_like_ID_1_reset_after_update(test_init):
+    client, test_blog, upd_post = test_init
+    response_like = client.get("/like/1")
+    response_like = client.get("/like/2")
+    response_like = client.get("/like/2")
+    assert "<span>2</span>" in response_like.data.decode()
+    assert "<span>1</span>" in response_like.data.decode()
+    response_update1 = client.get("/update/1")
+    response_update2 = client.post("/update/1", data=upd_post)
+    html_upd1 = response_update1.data.decode()
+    html_upd2 = response_update2.data.decode()
+    print(test_blog.get_all_posts())
+    assert "<span>0</span>" in html_upd2
+    assert "<span>2</span>" in html_upd2
+    assert "<span>1</span>" not in html_upd2
     assert "Edit Blog Post" in html_upd1
     assert "John Doe Jr" in html_upd2
     assert "First Post - have fun" in html_upd2

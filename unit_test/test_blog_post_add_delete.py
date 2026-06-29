@@ -126,7 +126,7 @@ def test_1_4_Call_delete_with_a_non_existing_post_id(test_init):
     assert response_del.status_code == 404  # Not Found
     assert response_add.status_code == 200
     print(test_blog.get_all_posts())
-    assert "404 - A wrong id was provided: 4" in html_del
+    assert "404 - ID does not exist in this blog" in html_del
     assert test_blog.get_free_id() == 4
     assert "Ajax has to buy more players" in html_add
     assert "ID: 3" in html_add
@@ -139,7 +139,7 @@ def test_1_4_Call_delete_with_a_non_existing_post_id(test_init):
 
 
 # 1.5 Call delete with a wrong type for post-id
-def test_1_4_Call_delete_with_an_wrong_type_for_postid(test_init):
+def test_1_5_Call_delete_with_an_wrong_type_for_postid(test_init):
     client, test_blog, test_post = test_init
     response_add = client.post("/add", data=test_post)
     html_add = response_add.data.decode()
