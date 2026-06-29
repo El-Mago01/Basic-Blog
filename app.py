@@ -265,9 +265,8 @@ class Blog:
             try:
                 os.remove(filename)
             except OSError as e:
-                raise InternalServerError(
-                    f"Can not remove image file. Please check path: {
-                        self.__storage}") from e
+                raise InternalServerError(f"Can not remove image file. "
+                                          f"Please check path: {self.__storage}") from e
             return True
         return False
 
