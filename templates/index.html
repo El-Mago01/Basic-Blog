@@ -26,12 +26,16 @@
     </span>
     <div class="btn-group btn-group-sm">
 
-    <a href="{{ url_for('like', post_id=post.id) }}"
-       class="like-button"
-       title="Like this post">
+    <form action="{{ url_for('like') }}"
+          method="POST"
+          class="d-inline">
+        <input type="hidden" name="post_id" value="{{ post.id }}">
+        <button type="submit"
+                class="btn btn-outline-danger"
+                title="Like">
         ❤️
-        <span>{{ post.likes if post.likes else 0 }}</span>
-    </a>
+        </button>
+    </form>
 
     <a href="{{ url_for('update', post_id=post.id) }}"
        class="btn btn-outline-primary"
@@ -39,11 +43,16 @@
         ✏️
     </a>
 
-    <a href="{{ url_for('delete', post_id=post.id) }}"
-       class="btn btn-outline-danger"
-       title="Delete">
-        🗑
-    </a>
+    <form action="{{ url_for('delete') }}"
+          method="POST"
+          class="d-inline">
+        <input type="hidden" name="post_id" value="{{ post.id }}">
+        <button type="submit"
+                class="btn btn-outline-danger"
+                title="Delete">
+            🗑
+        </button>
+    </form>
 
 </div>
 

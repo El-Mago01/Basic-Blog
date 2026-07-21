@@ -196,7 +196,7 @@ class Blog:
                 self.delete(existing_post_id)
             new_id = self.get_free_id()
             new_post["id"] = new_id
-            new_post["likes"] = 0
+            new_post['likes'] = new_post.get('likes', 0)
             post_image = new_post.get("image", None)
             print(f"Image of post to be added: {post_image}, {type(post_image)}")
             if isinstance(post_image, str) or post_image is None:
@@ -358,13 +358,14 @@ def get(post_id):
     abort(404, description="ID not found", post_id=post_id)
 
 
-@app.route("/delete/<int:post_id>", methods=["GET"])
-def delete(post_id):
+@app.route("/delete", methods=["POST"])
+def delete():
     """
     Removes the provided post_id from the cache and json file
     :param post_id:
     :return:
     """
+    post_id = request.form.get("post_id","")
     print(f"User performed a DELETE request with arg {post_id}")
     post_to_delete = check_received_post_id(post_id)
     try:
@@ -383,10 +384,12 @@ def delete(post_id):
         )
     abort(404, description=f"A wrong id was provided: {post_to_delete}")
 
-@app.route('/like/<int:post_id>')
-def like(post_id):
+@app.route('/like', methods=['POST'])
+def like():
+    post_id = request.form.get("post_id", "")
     print(f"User performed a LIKE request for post {post_id}")
-    blog.like(post_id)
+    post_to_delete = check_received_post_id(post_id)
+    blog.like(post_to_delete)
     return render_template(
         "index.html", blog_name=blog.get_name(), posts=blog.get_all_posts()
     )
@@ -394,7 +397,7 @@ def like(post_id):
 @app.route("/update/<int:post_id>", methods=["GET", "POST"])
 def update(post_id):
     """
-    The sequence for this routeconsists of 2 parts: 1. The user performs a "GET" request
+    The sequence for this route consists of 2 parts: 1. The user performs a "GET" request
     to the address to update a post with the provided post_id. Upon this request
     the update.html is returned with the details (author, title etc) of that post
     already pre-filled
@@ -416,21 +419,31 @@ def update(post_id):
 
     if request.method == "POST":
         id_to_update = post_id
-        title = request.form.get("title")
-        author = request.form.get("author")
-        content = request.form.get("content")
+        title = request.form.get("title","")
+        author = request.form.get("author","")
+        content = request.form.get("content","")
         new_image = request.files.get("image", None)
         cur_image = request.form.get("current_image", None)
+        old_blog = blog.get_post(id_to_update)
+        if old_blog:
+            likes = old_blog.get("likes", 0)
+        else:
+            likes = 0
         if title == "" or author == "" or len(title) < 4 or len(author) < 3:
             abort(
                 400,
                 description="Title and/or author was not provided or was too short")
+        if len(content.strip().split()) <= 4:
+            abort(
+                400,
+                description="Content was not provided or was too short. Must be more than 4 words"
+            )
         upd_post = {
             "id": id_to_update,
             "title": title,
             "author": author,
             "content": content,
-            "likes": 0,
+            "likes": likes,
         }
         if new_image:
             upd_post["image"] = new_image
@@ -472,12 +485,17 @@ def add():
     try:
         title = request.form["title"]
         author = request.form["author"]
-        content = request.form.get("content", "The title says it all")
+        content = request.form.get("content", "")
         image = request.files.get("image", None)
         if title == "" or author == "" or len(title) < 4 or len(author) < 3:
             abort(
                 400,
                 description="Title and/or author was not provided or was too short")
+        if len(content.strip().split()) <= 4:
+            abort(
+                400,
+                description="Too few words in the content. Make sure the post has more than 4 words."
+            )
     except KeyError:
         print("User performed an add request but no title and/or author was provided")
         abort(404, description="No title/author received")
@@ -553,7 +571,7 @@ def main():
                     url_for("static" + "/error.html"), code=500, message=e
                 )
             print("Stored initial post with id ", stored_id)
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5001, debug=True)
 
 
 if __name__ == "__main__":
