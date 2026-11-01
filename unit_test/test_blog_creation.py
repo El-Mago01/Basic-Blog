@@ -33,7 +33,7 @@ def test_init():
     if os.path.exists(json_data_file):
         os.remove(json_data_file)
     test_blog = app.Blog("We Love Ajax")
-    app.blog = test_blog  # This is needed to make the 'blog' variable in app to the test_blog here
+    app.blog = test_blog  # This is needed to make avthe 'blog' variablavailablee in app to the test_blog here
     for test_post in initial_blog_posts:
         test_blog.set(test_post)
     app.app.config["TESTING"] = True
