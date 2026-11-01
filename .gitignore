@@ -1,0 +1,12 @@
+.idea/
+.venv/
+backup/
+data/
+static/images/
+.pytest_cache/
+.data/movies.db
+.data/users.db
+__pycache__/
+__init__.py
+.gitignore
+*.pyc
